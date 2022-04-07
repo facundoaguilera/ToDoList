@@ -103,12 +103,12 @@ function ToDoListContainer(params) {
         url: Url,                            
     }).then(response => setList(response.data)).catch(err=> console.log(err)); //.map( data => data.title  )) 
        },[])
-              
+    const disabled = task=== ''          
     return(
         <div class="container">
             <h1>To-Do List </h1>
             <InputTask value={task} handleChange={handleChange}/>
-            <AddButton tarea={task} handleClick={handleClick}></AddButton>
+            <AddButton disabled={disabled} handleClick={handleClick}></AddButton>
             <List handleErase={handleErase} handleEdit={handleEdit2} list={list} handleCheckBox={handleCheckBox}></List>
             {taskToEdit.title && <EdTask updatedVal={taskToEdit} handleEdition={handleEdition2} handleSave={handleSave} handleCancel={handleCancel} ></EdTask>}
             

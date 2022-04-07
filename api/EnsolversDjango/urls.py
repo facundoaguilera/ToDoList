@@ -19,11 +19,11 @@ from Ensolvers import views
 from rest_framework import routers
 router = routers.DefaultRouter()
 router.register(r'tasks', views.TodoListView, 'task')
-#from django.views.generic import TemplateView
+from django.views.generic import TemplateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     # path('', include('Ensolvers.urls')),
     path('api/', include(router.urls)),
-    #path('',TemplateView.as_view(template_name='index.html')),
+    path('',TemplateView.as_view(template_name='index.html')),
 ]

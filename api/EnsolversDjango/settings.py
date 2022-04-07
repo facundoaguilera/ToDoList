@@ -60,7 +60,7 @@ ROOT_URLCONF = 'EnsolversDjango.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [], #[ os.path.join(BASE_DIR, 'front/build')] add to render frontend in server
+        'DIRS': [ os.path.join(BASE_DIR, 'front/build')], #add to render frontend in server
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -123,7 +123,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-#STATICFILES_DIRS = [   os.path.join(BASE_DIR, 'front/build/static') ]
+STATICFILES_DIRS = [   os.path.join(BASE_DIR, 'front/build/static') ]
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
