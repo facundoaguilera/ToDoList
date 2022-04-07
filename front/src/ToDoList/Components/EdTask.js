@@ -5,7 +5,7 @@ function EdTask(params) {
             <div>
                 <p><h3>Editing Task "{params.updatedVal.title}"</h3></p>
                <input placeholder={params.updatedVal.title} onChange={params.handleEdition}></input>
-               <button className="btn btn-outline-success" onClick={params.handleSave}>Save</button>
+               <button className="btn btn-outline-success" disabled={params.disabled} onClick={params.handleSave}>Save</button>
                <button className="btn btn-outline-secondary" onClick={params.handleCancel}>Cancel</button>
                {/* <button onClick={params.handleErase}>Delete</button> */}
             </div>

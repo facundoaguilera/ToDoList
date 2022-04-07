@@ -3,7 +3,7 @@ import InputTask from "./Components/InputTask"
 import AddButton from "./Components/Button"
 import List from "./Components/List"
 import EdTask from "./Components/EdTask";
-import Formulario from "./Components/Formulario";
+
 import axios from "axios";
 import Cookies from '../../node_modules/js-cookie/dist/js.cookie.min.mjs'
 
@@ -13,16 +13,14 @@ import Cookies from '../../node_modules/js-cookie/dist/js.cookie.min.mjs'
 function ToDoListContainer(params) {
     const [task, setTask] = useState("")
     const[list,setList] = useState([])
-    const[editionList,setEditionList] = useState("")
     const [taskToEdit,setTaskToEdit] = useState({})
     const [editedTask,setEditedTask] = useState()
-    const [change, setChange] = useState(0)
-    const [csrf,setCsrf] = useState("")
+    //const [csrf,setCsrf] = useState("")
 
     const sendGetRequest= async () => {
-            setTimeout(axios,4000)
+            
             const resp = await axios({method:'get', url:'http://127.0.0.1:8000/api/tasks/',
-        timeout:2000});
+       });
             setList(resp.data)
             
             console.log("entro en la funcion",'list',list,resp.data);
@@ -103,14 +101,15 @@ function ToDoListContainer(params) {
         url: Url,                            
     }).then(response => setList(response.data)).catch(err=> console.log(err)); //.map( data => data.title  )) 
        },[])
-    const disabled = task=== ''          
+    const disabled = task== ''    
+    const disabled2 = editedTask==''      
     return(
         <div class="container">
             <h1>To-Do List </h1>
             <InputTask value={task} handleChange={handleChange}/>
             <AddButton disabled={disabled} handleClick={handleClick}></AddButton>
             <List handleErase={handleErase} handleEdit={handleEdit2} list={list} handleCheckBox={handleCheckBox}></List>
-            {taskToEdit.title && <EdTask updatedVal={taskToEdit} handleEdition={handleEdition2} handleSave={handleSave} handleCancel={handleCancel} ></EdTask>}
+            {taskToEdit.title && <EdTask updatedVal={taskToEdit} handleEdition={handleEdition2} handleSave={handleSave} handleCancel={handleCancel} disabled={disabled2}></EdTask>}
             
         </div>
     )
