@@ -14,64 +14,94 @@ function ToDoListContainer(params) {
     const [task, setTask] = useState("")
     const[list,setList] = useState([])
     const[editionList,setEditionList] = useState("")
-    const [edition,setEdition] = useState({})
-    const [state,setState] = useState({'title':'', 'completed':false})
+    const [taskToEdit,setTaskToEdit] = useState({})
+    const [editedTask,setEditedTask] = useState()
+    const [change, setChange] = useState(0)
     const [csrf,setCsrf] = useState("")
-  
+
+    const sendGetRequest= async () => {
+            setTimeout(axios,4000)
+            const resp = await axios({method:'get', url:'http://127.0.0.1:8000/api/tasks/',
+        timeout:2000});
+            setList(resp.data)
+            
+            console.log("entro en la funcion",'list',list,resp.data);
+        
+    }
+    const sendPostRequest= async (postTask) => {
+        try {
+            const data={'title':task,'completed':false}
+            const resp = await axios.post('http://127.0.0.1:8000/api/tasks/',data);
+            const edlist = list.slice()
+            edlist.push(resp.data)
+            setList(edlist)
+                    
+        } catch (err) {
+            // Handle Error Here
+            console.error(err);
+        }
+    }
     function handleChange(event) {
         setTask(event.target.value)
             }
     function handleClick(){
         const Url="http://127.0.0.1:8000/api/tasks/"
-        const listCopy = list.slice()
-        listCopy.push(task)
-        setList(listCopy)
-        axios({method:'post',
-        url: Url,
-        data:{'title':task, 'completed':false}, 
-        headers:{ 'Content-type':'application/json',
-        'X-CSRFToken':csrf}                       
-    }).then(response => console.log(response)).catch(err=> console.log(err));
+        sendPostRequest(task);
+        sendGetRequest()
         setTask("")
+        
+               }
+
+    function handleEdit2(taskIndex){
+    const taskToEdition = list.filter((task)=>task.id===taskIndex.id)
+    setTaskToEdit(taskToEdition[0])
+        }
+
+    function handleEdition2(event){
+        setEditedTask(event.target.value)
             }
-    
-   function handleEdit(taskIndex){
-    let updatedValue = {}
-    const editTask = list.filter((task,index)=>index===taskIndex)
-    // setEdTask(editTask)
-    // console.log(editTask, taskIndex)
-    updatedValue = {'id':'', 'task':editTask[0], 'index':taskIndex}
-    setEdition(updatedValue)
-    console.log(edition)
-    //console.log(editTask[0])
-    console.log(edition)
-      }
-    function handleEdition(event){
-        let editionList= list.slice()
-        editionList[edition.index]=event.target.value
-        console.log( editionList)
-        setEditionList(editionList)
-    }
+
     function handleSave(){
-        setList(editionList)
-        setEdition({})
+        taskToEdit.title = editedTask
+        console.log('editada:',taskToEdit)
+        axios
+        .put(`http://localhost:8000/api/tasks/${taskToEdit.id}/`, taskToEdit)
+         setTaskToEdit({})
+                          }
+                 
+    function handleCheckBox(tarea,taskIndex){
+        
+        tarea.completed = !tarea.completed
+        console.log('editada:',tarea)
+        axios
+        .put(`http://localhost:8000/api/tasks/${tarea.id}/`,tarea)
+        .then(res => {console.log(res); 
+            const listcop = list.slice();
+            listcop[taskIndex] =  tarea;
+            setList(listcop); } )
+            
     }
+
     function handleCancel(){
-        setEdition({})
+        setTaskToEdit({})
     }
-    function handleErase(){
-        const filterList = list.filter((task,index)=>index!==edition.index)
-        setList(filterList)
-        setEdition({})
-       }
+
+    function handleErase(taskToDel,taskIndex){
+        axios
+        .delete(`http://localhost:8000/api/tasks/${taskToDel.id}/`)
+        .then(res => {console.log('delete',res);
+        const filterList = list.filter((task,index) => index!==taskIndex);
+         setList(filterList)                       }
+        )
+         setTaskToEdit({});
+         
+            }
     
     useEffect(()=>{
         const Url="http://127.0.0.1:8000/api/tasks/"
         axios({method:'get',
-        url: Url,
-        headers:{ 'Content-type':'application/json',
-        'X-CSRFToken':csrf}                       
-    }).then(response => {setList(response.data.map( data => data.title  )) }).catch(err=> console.log(err));
+        url: Url,                            
+    }).then(response => setList(response.data)).catch(err=> console.log(err)); //.map( data => data.title  )) 
        },[])
               
     return(
@@ -79,8 +109,8 @@ function ToDoListContainer(params) {
             <h1>To-Do List </h1>
             <InputTask value={task} handleChange={handleChange}/>
             <AddButton handleClick={handleClick}></AddButton>
-            <List handleEdit={handleEdit} list={list}></List>
-            {edition.task && <EdTask updatedVal={edition} handleEdition={handleEdition} handleSave={handleSave} handleCancel={handleCancel} handleErase={handleErase}></EdTask>}
+            <List handleErase={handleErase} handleEdit={handleEdit2} list={list} handleCheckBox={handleCheckBox}></List>
+            {taskToEdit.title && <EdTask updatedVal={taskToEdit} handleEdition={handleEdition2} handleSave={handleSave} handleCancel={handleCancel} ></EdTask>}
             
         </div>
     )
