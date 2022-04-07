@@ -108,7 +108,7 @@ function ToDoListContainer(params) {
         <div>
             <h1>To-Do List </h1>
             <InputTask value={task} handleChange={handleChange}/>
-            <AddButton handleClick={handleClick}></AddButton>
+            <AddButton tarea={task} handleClick={handleClick}></AddButton>
             <List handleErase={handleErase} handleEdit={handleEdit2} list={list} handleCheckBox={handleCheckBox}></List>
             {taskToEdit.title && <EdTask updatedVal={taskToEdit} handleEdition={handleEdition2} handleSave={handleSave} handleCancel={handleCancel} ></EdTask>}
             
