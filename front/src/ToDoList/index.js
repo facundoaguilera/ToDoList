@@ -105,7 +105,7 @@ function ToDoListContainer(params) {
        },[])
               
     return(
-        <div>
+        <div class="container">
             <h1>To-Do List </h1>
             <InputTask value={task} handleChange={handleChange}/>
             <AddButton tarea={task} handleClick={handleClick}></AddButton>

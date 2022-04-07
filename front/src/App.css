@@ -1,3 +1,4 @@
+
 .App {
   text-align: center;
 }
@@ -36,3 +37,17 @@
     transform: rotate(360deg);
   }
 }
+ul{display:flex;
+  flex-direction: column;
+  align-items:flex-end;
+  align-content: space-between;
+  list-style:none;
+}
+
+/* #editBtn{
+  margin-right: 10vw;
+  margin-left:20vw ;
+}
+span{
+  width:25vw;
+} */

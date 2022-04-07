@@ -3,10 +3,10 @@ import react from "react";
 function EdTask(params) {
     return(
             <div>
-                <p>Editing Task "{params.updatedVal.title}"</p>
+                <p><h3>Editing Task "{params.updatedVal.title}"</h3></p>
                <input placeholder={params.updatedVal.title} onChange={params.handleEdition}></input>
-               <button onClick={params.handleSave}>Save</button>
-               <button onClick={params.handleCancel}>Cancel</button>
+               <button className="btn btn-outline-success" onClick={params.handleSave}>Save</button>
+               <button className="btn btn-outline-secondary" onClick={params.handleCancel}>Cancel</button>
                {/* <button onClick={params.handleErase}>Delete</button> */}
             </div>
                    
